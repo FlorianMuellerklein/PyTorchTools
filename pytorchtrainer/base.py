@@ -3,6 +3,7 @@ import sys
 import time
 
 import torch
+from torch.utils.tensorboard import SummaryWriter
 
 from typing import List, Optional, Iterable
 
@@ -40,7 +41,7 @@ class BaseTrainer:
         checkpoint_dir: Optional[str] = './',
         model_name: Optional[str] = 'model',
 
-        tb_writer: torch.utils.tensorboard.SummaryWriter = None,
+        tb_writer: SummaryWriter = None,
     ):
         '''
         Initializes the trainer.
@@ -123,7 +124,6 @@ class BaseTrainer:
             self.metric_names = [m.__name__.capitalize()  for m in metrics]
         if metrics is not None:
             self.metric_tracking = {mn: {'train': [], 'valid': []} for mn in self.metric_names}
-            print(self.metric_tracking)
 
         self.tb_writer = tb_writer
 
