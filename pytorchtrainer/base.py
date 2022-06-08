@@ -8,7 +8,7 @@ from typing import List, Optional, Iterable
 
 class BaseTrainer:
     '''
-
+    Base class for PyTorch training
     '''
     def __init__(
         self,
@@ -35,13 +35,59 @@ class BaseTrainer:
         # accelerator
         device: torch.device = None,
 
-        # model saving
+        # artifact saving
         checkpoint_every: int = 100,
         checkpoint_dir: Optional[str] = './',
-        model_name: Optional[str] = 'model'
+        model_name: Optional[str] = 'model',
+
+        tb_writer: torch.utils.tensorboard.SummaryWriter = None,
     ):
         '''
+        Initializes the trainer.
 
+        Arguments:
+            net: A torch.nn.Module that produces predictions on the images
+                and whose weights are updated via the optimizer
+
+            train_loader: An iteratble that returns batches of (inputs, targets)
+
+            valid_loader: An iteratble that returns batches of (inputs, targets)
+
+            crit: A single or list of loss functions to apply to the output of the network
+
+            crit_lambdas: A list of loss function scaling lambdas to apply to each loss
+
+            metrics: A list of optional metrics to use to track learning progress outside of the loss function.
+                Must accept inputs in the form of metric(y_true, y_score), following sklearn convention for compatibility
+
+            metric_names: An optional list of metrics names to be used during tracking and saving. If not supplied
+                will use the function names for each metrics
+
+            epochs: How many epochs to use for training
+
+            optimizer: The torch optimizer function, can be any supplied by PyTorch
+
+            scheduler: Optional PyTorch learning rate scheduler
+
+            mixed_precision: Whether to use mixed precision training or not
+
+            device: Whether to use any supported accelerator, for example a GPU
+
+
+            checkpoint_every: How often to save model weights
+
+            checkpoint_dir: Directory to save model weights
+
+            model_name: The name of the model for saving weights
+
+            tb_writer: An optional tensorboard writer for logging
+
+        Attributes:
+            iterations: tracks the total number of gradient updates
+
+            losses: tracks the loss values for each batch
+
+            metric_tracking: trackes the metric values for each batch
         '''
         self.train_loader = train_loader
         self.valid_loader = valid_loader
@@ -77,6 +123,9 @@ class BaseTrainer:
             self.metric_names = [m.__name__.capitalize()  for m in metrics]
         if metrics is not None:
             self.metric_tracking = {mn: {'train': [], 'valid': []} for mn in self.metric_names}
+            print(self.metric_tracking)
+
+        self.tb_writer = tb_writer
 
 
     def train_network(self):
@@ -166,10 +215,17 @@ class BaseTrainer:
 
             # track metrics
             if self.metrics is not None:
-                metric_vals = [m(preds, targets) for m in self.metrics]
+
+                metric_vals = [m(targets, preds) for m in self.metrics]
                 for m_idx, mv in enumerate(metric_vals):
                     self.metric_tracking[self.metric_names[m_idx]][mode].append(mv)
                     running_metrics[m_idx] += mv
+
+            if self.tb_writer is not None:
+                self.writer.add_scalar(f'Loss/{mode}', loss.item(), self.iterations)
+
+                for metric_name in self.metric_tracking:
+                    self.writer.add_scalaer(f'{metric_name}/{mode}', self.metric_tracking[metric_name][mode][-1], self.iterations)
 
             # display running statistics
             sys.stdout.write('\r')
@@ -198,3 +254,10 @@ class BaseTrainer:
                 ))
 
         self.losses[mode].append(running_loss / n_batches)
+
+    def get_loss(self, inputs, targets):
+        '''
+        Abstract class for calculating the loss. This part can be customized for custom loaders. This
+        follows PyTorch convention in accepting (input, target) rather than (target, input) like sklearn
+        '''
+        pass

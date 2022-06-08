@@ -23,3 +23,48 @@ trainer = SingleOutputTrainer(
 # train the network
 trainer.train_network()
 ```
+
+## Using the Trainer
+
+### Arguments:
+    * **net**: A torch.nn.Module that produces predictions on the images
+        and whose weights are updated via the optimizer
+
+    * **train_loader**: An iteratble that returns batches of (inputs, targets)
+
+    * **valid_loader**: An iteratble that returns batches of (inputs, targets)
+
+    * **crit**: A single or list of loss functions to apply to the output of the network
+
+    * **crit_lambdas**: A list of loss function scaling lambdas to apply to each loss
+
+    * **metrics**: A list of optional metrics to use to track learning progress outside of the loss function.
+        Must accept inputs in the form of metric(y_true, y_score), following sklearn convention for compatibility
+
+    * **metric_names**: An optional list of metrics names to be used during tracking and saving. If not supplied
+        will use the function names for each metrics
+
+    * **epochs**: How many epochs to use for training
+
+    * **optimizer**: The torch optimizer function, can be any supplied by PyTorch
+
+    * **scheduler**: Optional PyTorch learning rate scheduler
+
+    * **mixed_precision**: Whether to use mixed precision training or not
+
+    * **device**: Whether to use any supported accelerator, for example a GPU
+
+    * **checkpoint_every**: How often to save model weights
+
+    * **checkpoint_dir**: Directory to save model weights
+
+    * **model_name**: The name of the model for saving weights
+
+    * **tb_writer**: An optional tensorboard writer for logging
+
+### Attributes:
+    * **iterations**: tracks the total number of gradient updates
+
+    * **losses**: tracks the loss values for each batch
+
+    * **metric_tracking**: trackes the metric values for each batch
