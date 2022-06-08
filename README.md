@@ -27,44 +27,46 @@ trainer.train_network()
 ## Using the Trainer
 
 ### Arguments:
-    * **net**: A torch.nn.Module that produces predictions on the images
-        and whose weights are updated via the optimizer
 
-    * **train_loader**: An iteratble that returns batches of (inputs, targets)
+* **net**: A torch.nn.Module that produces predictions on the images
+    and whose weights are updated via the optimizer
 
-    * **valid_loader**: An iteratble that returns batches of (inputs, targets)
+* **train_loader**: An iteratble that returns batches of (inputs, targets)
 
-    * **crit**: A single or list of loss functions to apply to the output of the network
+* **valid_loader**: An iteratble that returns batches of (inputs, targets)
 
-    * **crit_lambdas**: A list of loss function scaling lambdas to apply to each loss
+* **crit**: A single or list of loss functions to apply to the output of the network
 
-    * **metrics**: A list of optional metrics to use to track learning progress outside of the loss function.
-        Must accept inputs in the form of metric(y_true, y_score), following sklearn convention for compatibility
+* **crit_lambdas**: A list of loss function scaling lambdas to apply to each loss
 
-    * **metric_names**: An optional list of metrics names to be used during tracking and saving. If not supplied
-        will use the function names for each metrics
+* **metrics**: A list of optional metrics to use to track learning progress outside of the loss function.
+    Must accept inputs in the form of metric(y_true, y_score), following sklearn convention for compatibility
 
-    * **epochs**: How many epochs to use for training
+* **metric_names**: An optional list of metrics names to be used during tracking and saving. If not supplied
+    will use the function names for each metrics
 
-    * **optimizer**: The torch optimizer function, can be any supplied by PyTorch
+* **epochs**: How many epochs to use for training
 
-    * **scheduler**: Optional PyTorch learning rate scheduler
+* **optimizer**: The torch optimizer function, can be any supplied by PyTorch
 
-    * **mixed_precision**: Whether to use mixed precision training or not
+* **scheduler**: Optional PyTorch learning rate scheduler
 
-    * **device**: Whether to use any supported accelerator, for example a GPU
+* **mixed_precision**: Whether to use mixed precision training or not
 
-    * **checkpoint_every**: How often to save model weights
+* **device**: Whether to use any supported accelerator, for example a GPU
 
-    * **checkpoint_dir**: Directory to save model weights
+* **checkpoint_every**: How often to save model weights
 
-    * **model_name**: The name of the model for saving weights
+* **checkpoint_dir**: Directory to save model weights
 
-    * **tb_writer**: An optional tensorboard writer for logging
+* **model_name**: The name of the model for saving weights
+
+* **tb_writer**: An optional tensorboard writer for logging
 
 ### Attributes:
-    * **iterations**: tracks the total number of gradient updates
 
-    * **losses**: tracks the loss values for each batch
+* **iterations**: tracks the total number of gradient updates
 
-    * **metric_tracking**: trackes the metric values for each batch
+* **losses**: tracks the loss values for each batch
+
+* **metric_tracking**: trackes the metric values for each batch
