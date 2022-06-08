@@ -47,7 +47,7 @@ class BaseTrainer:
         Initializes the trainer.
 
         Arguments:
-            net: A torch.nn.Module that produces predictions on the images
+            net: A torch.nn.Module that produces predictions on the data
                 and whose weights are updated via the optimizer
 
             train_loader: An iteratble that returns batches of (inputs, targets)
@@ -168,9 +168,9 @@ class BaseTrainer:
 
     def run_epoch(self, mode: str):
         '''
-        Uses the data loader to grab a batch of images
+        Uses the data loader to grab a batch of data
 
-        Pushes images through network and gathers predictions
+        Pushes data through network and gathers predictions
 
         Updates network weights by evaluating the loss functions
         '''
