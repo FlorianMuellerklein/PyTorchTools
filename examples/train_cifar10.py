@@ -82,7 +82,7 @@ def main(args):
     )
 
     # make a custom accuracy metric
-    def accuracy(preds, targets):
+    def accuracy(targets, preds):
         _, pred_class = preds.max(-1)
         total_correct = (pred_class == targets).sum()
         total = targets.size(0)

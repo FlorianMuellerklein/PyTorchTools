@@ -74,7 +74,6 @@ class BaseTrainer:
 
             device: Whether to use any supported accelerator, for example a GPU
 
-
             checkpoint_every: How often to save model weights
 
             checkpoint_dir: Directory to save model weights
@@ -216,7 +215,7 @@ class BaseTrainer:
             # track metrics
             if self.metrics is not None:
 
-                metric_vals = [m(targets, preds) for m in self.metrics]
+                metric_vals = [m(targets, preds).item() for m in self.metrics]
                 for m_idx, mv in enumerate(metric_vals):
                     self.metric_tracking[self.metric_names[m_idx]][mode].append(mv)
                     running_metrics[m_idx] += mv

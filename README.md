@@ -24,6 +24,14 @@ trainer = SingleOutputTrainer(
 trainer.train_network()
 ```
 
+## Installation
+
+```
+git clone https://github.com/FlorianMuellerklein/PyTorchTrainer.git
+cd PyTorchTrainer
+pip install .
+```
+
 ## Using the Trainer
 
 ### Arguments:
@@ -70,3 +78,16 @@ trainer.train_network()
 * **losses**: tracks the loss values for each batch
 
 * **metric_tracking**: trackes the metric values for each batch
+
+## Metric Tracking
+
+The loss values and supplied metrics will be tracked for both training and validation.They can be plotted easily by retrieving the attributes from the class.
+
+```
+plt.plot(trainer.metric_tracking['Accuracy']['train'])
+plt.ylabel('Accuracy')
+plt.xlabel('Batch')
+plt.show()
+```
+
+![](imgs/pytorchtrainer_train-accs.png)

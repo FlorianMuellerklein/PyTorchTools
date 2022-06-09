@@ -6,7 +6,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='PyTorchTrainer',
-    version='0.1.0',
+    version='0.1.1',
     description='Simple trainer class for pytorch',
     url='https://github.com/FlorianMuellerklein/PyTorchTrainer',
     author='Florian Muellerklein',
