@@ -85,7 +85,7 @@ See the examples directory.
 
 ## Metric Tracking
 
-The loss values and supplied metrics will be tracked for both training and validation.They can be plotted easily by retrieving the attributes from the class. The following example assumes that a metric function called `accuracy` was passed to the trainer (like in the Cifar10 example).
+The loss values and supplied metrics will be tracked for both training and validation. They can be plotted easily by retrieving the attributes from the class. The following example assumes that a metric function called `accuracy` was passed to the trainer (like in the Cifar10 example).
 
 ```
 plt.plot(trainer.metric_tracking['Accuracy']['train'])

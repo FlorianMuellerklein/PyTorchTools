@@ -46,48 +46,69 @@ class BaseTrainer:
         '''
         Initializes the trainer.
 
-        Arguments:
-            net: A torch.nn.Module that produces predictions on the data
+        Parameters
+        ----------
+            net: torch.nn.Module
+                A pytorch model that produces predictions on the data
                 and whose weights are updated via the optimizer
 
-            train_loader: An iteratble that returns batches of (inputs, targets)
+            train_loader: iterable
+                An iteratble that returns batches of (inputs, targets)
 
-            valid_loader: An iteratble that returns batches of (inputs, targets)
+            valid_loader: iterable
+                An iteratble that returns batches of (inputs, targets)
 
-            crit: A single or list of loss functions to apply to the output of the network
+            crit: torch.nn.Module or List[torch.nn.Module]
+                A single or list of loss functions to apply to the output of the network
 
-            crit_lambdas: A list of loss function scaling lambdas to apply to each loss
+            crit_lambdas: float or List[float]
+                A list of loss function scaling lambdas to apply to each loss
 
-            metrics: A list of optional metrics to use to track learning progress outside of the loss function.
+            metrics: function or List[function]
+                A list of optional metrics to use to track learning progress outside of the loss function.
                 Must accept inputs in the form of metric(y_true, y_score), following sklearn convention for compatibility
 
-            metric_names: An optional list of metrics names to be used during tracking and saving. If not supplied
+            metric_names: str or List[str]
+                An optional list of metrics names to be used during tracking and saving. If not supplied
                 will use the function names for each metrics
 
-            epochs: How many epochs to use for training
+            epochs: int
+                How many epochs to use for training
 
-            optimizer: The torch optimizer function, can be any supplied by PyTorch
+            optimizer: torch.optim.Optimizer
+                The torch optimizer function, can be any supplied by PyTorch
 
-            scheduler: Optional PyTorch learning rate scheduler
+            scheduler: torch.optim.lr_scheduler
+                Optional PyTorch learning rate scheduler
 
-            mixed_precision: Whether to use mixed precision training or not
+            mixed_precision: bool
+                Whether to use mixed precision training or not
 
-            device: Whether to use any supported accelerator, for example a GPU
+            device: torch.device
+                Whether to use any supported accelerator, for example a GPU
 
-            checkpoint_every: How often to save model weights
+            checkpoint_every: int
+                How often to save model weights
 
-            checkpoint_dir: Directory to save model weights
+            checkpoint_dir: str
+                Directory to save model weights
 
-            model_name: The name of the model for saving weights
+            model_name: str
+                The name of the model for saving weights
 
-            tb_writer: An optional tensorboard writer for logging
+            tb_writer: SummaryWriter
+                An optional tensorboard writer for logging
 
-        Attributes:
-            iterations: tracks the total number of gradient updates
+        Attributes
+        ----------
+            iterations: int
+                tracks the total number of gradient updates
 
-            losses: tracks the loss values for each batch
+            losses: dict
+                tracks the loss values for each batch
 
-            metric_tracking: trackes the metric values for each batch
+            metric_tracking: dict
+                trackes the metric values for each batch
         '''
         self.train_loader = train_loader
         self.valid_loader = valid_loader
