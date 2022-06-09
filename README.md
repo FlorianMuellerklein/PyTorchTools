@@ -34,6 +34,10 @@ pip install .
 
 ## Using the Trainer
 
+The general workflow is to keep as much of standard PyTorch as possible and work with their design patterns rather than create new ones. Therefore everything up until instantiating the trainer will be done as one typically does with PyTorch. There is no need to restructure the model or anything like that. These trainers are meant only to handle the training logic as well as the artifacts and data produced while training.
+
+See the examples directory.
+
 ### Arguments:
 
 * **net**: A torch.nn.Module that produces predictions on the images
@@ -81,7 +85,7 @@ pip install .
 
 ## Metric Tracking
 
-The loss values and supplied metrics will be tracked for both training and validation.They can be plotted easily by retrieving the attributes from the class.
+The loss values and supplied metrics will be tracked for both training and validation.They can be plotted easily by retrieving the attributes from the class. The following example assumes that a metric function called `accuracy` was passed to the trainer (like in the Cifar10 example).
 
 ```
 plt.plot(trainer.metric_tracking['Accuracy']['train'])
