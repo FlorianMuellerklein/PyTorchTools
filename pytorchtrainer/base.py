@@ -275,9 +275,13 @@ class BaseTrainer:
 
         self.losses[mode].append(running_loss / n_batches)
 
-    def get_loss(self, inputs, targets):
+    def get_loss(self, inputs: torch.Tensor, targets: torch.Tensor):
         '''
         Abstract class for calculating the loss. This part can be customized for custom loaders. This
         follows PyTorch convention in accepting (input, target) rather than (target, input) like sklearn
+
+        Returns
+        -------
+            torch.Tensor of loss value
         '''
         pass
