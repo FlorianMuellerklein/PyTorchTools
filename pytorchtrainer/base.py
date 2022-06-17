@@ -3,7 +3,6 @@ import sys
 import time
 
 import torch
-from torch.utils.tensorboard import SummaryWriter
 
 from typing import List, Optional, Iterable
 
@@ -41,7 +40,7 @@ class BaseTrainer:
         checkpoint_dir: Optional[str] = './',
         model_name: Optional[str] = 'model',
 
-        tb_writer: SummaryWriter = None,
+        tb_writer = None,
     ):
         '''
         Initializes the trainer.
