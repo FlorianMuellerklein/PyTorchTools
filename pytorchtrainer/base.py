@@ -172,7 +172,7 @@ class BaseTrainer:
             # initialize distributed data parallel modules
             print('DDP setup ...')
             # set up the processing group
-            self.setup()
+            self.init_ddp()
             self.world_size = len(self.device_ids)
         else:
             self.device = torch.device('cuda:{}'.format(device_ids[0]) if torch.cuda.is_available() else 'cpu')
@@ -194,7 +194,7 @@ class BaseTrainer:
         '''
         if self.ddp:
             dist.init_process_group("gloo", rank = device, world_size = world_size)
-            net, optimizer = self.setup_ddp(device, self.net)
+            net, optimizer = self.setup_ddp_modules(device, self.net)
         else:
             device = self.device
             net = self.net.to(device)
@@ -327,7 +327,7 @@ class BaseTrainer:
 
         self.losses[mode].append(running_loss / n_batches)
 
-    def setup(self):
+    def init_ddp(self):
         '''
         Standard PyTorch setup for distributed dataparallel
 
@@ -338,7 +338,7 @@ class BaseTrainer:
         os.environ['MASTER_ADDR'] = 'localhost'
         os.environ['MASTER_PORT'] = '12355'
 
-    def prep_loaders(self, dataset: Iterable, rank: int, world_size: int):
+    def prep_ddp_loaders(self, dataset: Iterable, rank: int, world_size: int):
         '''
         Distributes a dataloader across world size.
 
@@ -366,12 +366,12 @@ class BaseTrainer:
 
         return loader
 
-    def setup_ddp(self, rank, net):
+    def setup_ddp_modules(self, rank, net):
 
         print('Splitting data loader ...')
         # split the dataloader
-        self.train_loader = self.prep_loaders(self.train_dataset, rank, self.world_size)
-        self.valid_loader = self.prep_loaders(self.valid_dataset, rank, self.world_size)
+        self.train_loader = self.prep_ddp_loaders(self.train_dataset, rank, self.world_size)
+        self.valid_loader = self.prep_ddp_loaders(self.valid_dataset, rank, self.world_size)
 
         print('Distributing model ...')
         # wrap the model
