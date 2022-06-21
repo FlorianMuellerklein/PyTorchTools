@@ -63,44 +63,23 @@ def main(args):
         download = True, transform = tforms['valid']
     )
 
-    train_loader = DataLoader(
-        trainset,
-        batch_size=args.batch_size,
-        shuffle=True,
-        num_workers=8,
-        pin_memory=True,
-    )
-
-    valid_loader = DataLoader(
-        validset,
-        batch_size=args.batch_size,
-        shuffle=False,
-        num_workers=4,
-        pin_memory=True
-    )
-
-    # make a custom accuracy metric
-    def accuracy(targets, preds):
-        _, pred_class = preds.max(-1)
-        total_correct = (pred_class == targets).sum()
-        total = targets.size(0)
-        return total_correct / total
-
     # set up our trainer
     trainer = SingleOutputTrainer(
-        train_loader = train_loader,
-        valid_loader = valid_loader,
+        train_dataset = trainset,
+        valid_dataset = validset,
+        batch_size = 1024,
+        num_workers = 4,
         net = net,
         crit = criterion,
-        device_ids = [0],
+        device_ids = [0,1],
+        ddp = True,
         optimizer = optimizer,
         epochs = args.epochs,
         scheduler = scheduler,
-        metrics = [accuracy]
     )
 
     # train the network
-    trainer.train_network()
+    trainer.fit()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Cifar10 Training')

@@ -101,7 +101,7 @@ def main(args):
         valid_loader = valid_loader,
         net = net,
         crit = criterion,
-        device = device,
+        device_ids = [0],
         optimizer = optimizer,
         epochs = args.epochs,
         scheduler = scheduler,
