@@ -65,11 +65,17 @@ class BaseTrainer:
                 A pytorch model that produces predictions on the data
                 and whose weights are updated via the optimizer
 
-            train_loader: iterable
-                An iteratble that returns batches of (inputs, targets)
+            train_dataset: Dataset
+                A torch dataset that iterates through (inputs, targets)
 
-            valid_loader: iterable
-                An iteratble that returns batches of (inputs, targets)
+            valid_dataset: Dataset
+                A torch dataset that iteractes through(inputs, targets)
+
+            train_loader: DataLoader
+                A torch dataloader that returns batches of (inputs, targets)
+
+            valid_loader: DataLoader
+                A torch dataloader that returns batches of (inputs, targets)
 
             crit: torch.nn.Module or List[torch.nn.Module]
                 A single or list of loss functions to apply to the output of the network
@@ -292,10 +298,10 @@ class BaseTrainer:
                     running_metrics[m_idx] += mv
 
             if self.tb_writer is not None:
-                self.writer.add_scalar(f'Loss/{mode}', loss.item(), self.iterations)
+                self.tb_writer.add_scalar(f'Loss/{mode}', loss.item(), self.iterations)
 
                 for metric_name in self.metric_tracking:
-                    self.writer.add_scalaer(f'{metric_name}/{mode}', self.metric_tracking[metric_name][mode][-1], self.iterations)
+                    self.tb_writer.add_scalaer(f'{metric_name}/{mode}', self.metric_tracking[metric_name][mode][-1], self.iterations)
 
             if (self.ddp and device == 0) or (not self.ddp):
                 # display running statistics
