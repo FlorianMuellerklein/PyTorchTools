@@ -162,7 +162,7 @@ class BaseTrainer:
         self.model_name = model_name + '.pth'
 
         # initialize update step counter
-        self.iterations = 0
+        self.iterations = {'train': 0, 'valid': 0}
 
         # loss and metrics tracking
         self.losses = {'train': [], 'valid': []}
@@ -287,7 +287,7 @@ class BaseTrainer:
                 # zero gradients for next run
                 self.net.zero_grad(set_to_none=True)
                 # count grad updates
-                self.iterations += 1
+                self.iterations[mode] += 1
 
             # track metrics
             if self.metrics is not None:
@@ -298,10 +298,10 @@ class BaseTrainer:
                     running_metrics[m_idx] += mv
 
             if self.tb_writer is not None:
-                self.tb_writer.add_scalar(f'Loss/{mode}', loss.item(), self.iterations)
+                self.tb_writer.add_scalar(f'Loss/{mode}', loss.item(), self.iterations[mode])
 
                 for metric_name in self.metric_tracking:
-                    self.tb_writer.add_scalaer(f'{metric_name}/{mode}', self.metric_tracking[metric_name][mode][-1], self.iterations)
+                    self.tb_writer.add_scalaer(f'{metric_name}/{mode}', self.metric_tracking[metric_name][mode][-1], self.iterations[mode])
 
             if (self.ddp and device == 0) or (not self.ddp):
                 # display running statistics
