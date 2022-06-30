@@ -2,34 +2,34 @@ import numpy as np
 
 class AddWarmup():
     '''
-        Wraps a standard scheduler in a warmup scheduler
+    Wraps a standard scheduler in a warmup scheduler
 
-        Parameters
-        ----------
-            scheduler: torch.nn.Module
-                A pytorch model that produces predictions on the data
-                and whose weights are updated via the optimizer
+    Parameters
+    ----------
+        scheduler: torch.nn.Module
+            A pytorch model that produces predictions on the data
+            and whose weights are updated via the optimizer
 
-            starting_lr: float
-                The initial value to start the learning rate ramp up from
+        starting_lr: float
+            The initial value to start the learning rate ramp up from
 
-            ending_lr: float
-                The final learning rate value to achieve after rampup
+        ending_lr: float
+            The final learning rate value to achieve after rampup
 
-            warmup_dur: int
-                How many steps to go from starting_lr to ending_lr
+        warmup_dur: int
+            How many steps to go from starting_lr to ending_lr
 
-        Attributes
-        ----------
-            lr_schedule: np.array
-                the schedule for linear learning rate ramp up
+    Attributes
+    ----------
+        lr_schedule: np.array
+            the schedule for linear learning rate ramp up
 
-        Methods
-        -------
-            _set_lr
-                Changes the learning rate for the optimizer
+    Methods
+    -------
+        _set_lr
+            Changes the learning rate for the optimizer
 
-        '''
+    '''
     def __init__(
             self,
             scheduler,
