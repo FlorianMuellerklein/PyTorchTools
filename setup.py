@@ -5,9 +5,9 @@ with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
 setup(
-    name='PyTorchTrainer',
+    name='PyTorchTools',
     version='0.1.1',
-    description='Simple trainer class for pytorch',
+    description='Simple tools for pytorch',
     url='https://github.com/FlorianMuellerklein/PyTorchTrainer',
     author='Florian Muellerklein',
     author_email='f.muellerklein@gmail.com',

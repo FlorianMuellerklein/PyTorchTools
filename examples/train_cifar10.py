@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from torchvision import models, datasets
 from torchvision import transforms
 
-from pytorchtrainer.trainers import SingleOutputTrainer
+from pytorchtools.trainers import SingleOutputTrainer
 
 
 def main(args):

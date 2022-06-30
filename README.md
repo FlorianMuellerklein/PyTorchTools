@@ -1,4 +1,8 @@
-# PyTorch Trainer
+# PyTorch Tools
+
+A collection of tools to make base PyTorch slightly more streamlined. Currently contains trainer classes and a class to add learning rate warmup to a PyTorch scheduler.
+
+## Trainer
 
 A module for handling the training logic for PyTorch models. The Trainer classes act as the [information expert](https://en.wikipedia.org/wiki/GRASP_(object-oriented_design)#Information_expert) for the training data and metrics for running model training. Essentially all information needed to fullfill training and generated via training will be handled by these classes. This helps to reduce repeated code and produce easily traceable ML code.
 

@@ -10,7 +10,7 @@ from torchvision import transforms
 
 from sklearn.metrics import top_k_accuracy_score
 
-from pytorchtrainer.trainers import SingleOutputTrainer
+from pytorchtools.trainers import SingleOutputTrainer
 
 
 def main(args):
