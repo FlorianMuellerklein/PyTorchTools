@@ -9,6 +9,11 @@ class TipletMiningLoss(nn.Module):
     of corresponding labels. The forward function finds for each embedding the furthest positive and
     closest negative and calculates the triplet loss using those.
 
+    Parameters
+    ----------
+        margin: float
+            The margin used for comparison between the pos and neg distances.
+
     Methods
     -------
         forward: vector_batch (N, embed_dim), labels_batch (N)
@@ -24,8 +29,9 @@ class TipletMiningLoss(nn.Module):
             mask where two labels do not match.
 
     '''
-    def __init__(self):
+    def __init__(self, margin = 1.):
         super(TipletMiningLoss, self).__init__()
+        self.margin = margin
 
     def forward(self, vector_batch: torch.Tensor, labels_batch: torch.Tensor) -> torch.Tensor:
 
@@ -45,7 +51,7 @@ class TipletMiningLoss(nn.Module):
         negative_dists = torch.min(dists + (global_max_value * ~neg_mask), 1)[0]
 
         # calculate triplet loss using mined pairs
-        tl = torch.max(positive_dists - negative_dists + 0.5, torch.Tensor([0.0]))
+        tl = torch.max(positive_dists - negative_dists + self.margin, torch.Tensor([0.0]))
 
         return torch.mean(tl)
 
